@@ -17,14 +17,19 @@ def is_delta_in_range(increasing, delta):
 
 
 def is_report_safe(r):
+    prev_error = False
     increasing = r[1] - r[0] > 0
 
     prev = r[0]
     for i in range(1, len(r)):
         delta = r[i] - prev
         if not is_delta_in_range(increasing, delta):
-            return False
-        prev = r[i]
+            if prev_error:
+                print(r, "is unsafe")
+                return False
+            prev_error = True
+        else:
+            prev = r[i]
     return True
 
 
@@ -33,3 +38,5 @@ def safe_reports(reports):
 
 
 print(safe_reports(reports))
+
+# b: 352 is too low...

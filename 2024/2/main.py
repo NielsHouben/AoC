@@ -17,26 +17,30 @@ def is_delta_in_range(increasing, delta):
 
 
 def is_report_safe(r):
-    prev_error = False
     increasing = r[1] - r[0] > 0
 
     prev = r[0]
     for i in range(1, len(r)):
         delta = r[i] - prev
         if not is_delta_in_range(increasing, delta):
-            if prev_error:
-                print(r, "is unsafe")
-                return False
-            prev_error = True
-        else:
-            prev = r[i]
+            return False
+        prev = r[i]
     return True
 
 
 def safe_reports(reports):
-    return len([r for r in reports if is_report_safe(r)])
+    sum = 0
+    for r in reports:
+        for i in range(len(r)):
+            if is_report_safe(r[:i] + r[i+1:]):
+                sum += 1
+                break
+    return sum
 
 
 print(safe_reports(reports))
 
 # b: 352 is too low...
+# b: 354 is too low...
+# b: 369 is too low...
+# b: 373 is too low...

@@ -17,15 +17,14 @@ def is_delta_in_range(increasing, delta):
 
 
 def is_report_safe(r):
-    delta = r[1] - r[0]
-    increasing = delta > 0
+    increasing = r[1] - r[0] > 0
 
-    if not is_delta_in_range(increasing, delta):
-        return False
-    for i in range(1, len(r) - 1):
-        delta = r[i+1] - r[i]
+    prev = r[0]
+    for i in range(1, len(r)):
+        delta = r[i] - prev
         if not is_delta_in_range(increasing, delta):
             return False
+        prev = r[i]
     return True
 
 

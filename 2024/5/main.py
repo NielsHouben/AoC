@@ -37,15 +37,48 @@ def get_valid_updates(predecessors, updates):
     return [update for update in updates if is_update_valid(update, predecessors)]
 
 
-def sum_middle_elements(predecessors, updates):
-    valid_updates = get_valid_updates(predecessors, updates)
+def get_invalid_updates(predecessors, updates):
+    return [update for update in updates if not is_update_valid(update, predecessors)]
+
+
+def fix_invalid_update(predecessors, update):
+    seen = set()
+    while True:
+        fixed = False
+        seen.clear()
+        for i in range(len(update)):
+            n = update[i]
+            seen.add(n)
+            rp = [p for p in predecessors.get(n, []) if p in update]
+            if not all(p in seen for p in rp):
+                # move item to right
+                seen.remove(n)
+                seen.add(update[i + 1])
+                update[i + 1], update[i] = update[i], update[i + 1]
+                fixed = True
+        if not fixed:
+            break
+
+    return update
+
+
+def fix_invalid_updates(predecessors, updates):
+    return [fix_invalid_update(predecessors, u) for u in updates]
+
+
+def sum_middle_elements(updates):
     res = 0
-    for update in valid_updates:
+    for update in updates:
         res += update[len(update) // 2]
     return res
 
 
-for p in predecessors:
-    print(p, predecessors[p])
-print()
-print(sum_middle_elements(predecessors, updates))
+# for p in predecessors:
+#     print(p, predecessors[p])
+
+# a
+# print(sum_middle_elements(get_valid_updates(predecessors, updates)))
+
+invalid_updates = get_invalid_updates(predecessors, updates)
+fixed_udpates = fix_invalid_updates(predecessors, invalid_updates)
+print(sum_middle_elements(fixed_udpates))

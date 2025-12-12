@@ -1,0 +1,5 @@
+# Cargo build output
+/target/
+
+# Rust/Cargo backup files
+**/*.rs.bk

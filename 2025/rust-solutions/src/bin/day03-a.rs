@@ -52,9 +52,5 @@ fn largest_joltage(iter: impl Iterator<Item = char>, last: u32) -> u32 {
 
     val2 = cmp::max(val2, last);
 
-    let mut o: String = "".to_owned();
-    o.push_str(val1.to_string().as_str());
-    o.push_str(val2.to_string().as_str());
-
-    o.parse::<u32>().unwrap()
+    val1 * 10 + val2
 }
